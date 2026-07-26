@@ -200,8 +200,7 @@
   <section class="form-section" id="formulario">
     <div class="container">
       <h2>Agende sua vistoria elétrica residencial</h2>
-      <!-- TODO: conectar a um backend/webhook real antes de publicar (ex.: e-mail, planilha, CRM). Sem isso, o formulário não envia os dados para lugar nenhum. -->
-      <form id="lead-form" onsubmit="return document.getElementById('lead-form').checkValidity();">
+      <form id="lead-form">
         <input class="full" type="text" name="nome" required placeholder="Nome">
         <input type="text" name="contato" required placeholder="WhatsApp ou e-mail">
         <select name="tipo-imovel" required>
@@ -266,5 +265,22 @@
     </div>
   </section>
 
+<script>
+  document.getElementById('lead-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!this.checkValidity()) { this.reportValidity(); return; }
+    var nome = this.nome.value.trim();
+    var contato = this.contato.value.trim();
+    var tipoImovelEl = this['tipo-imovel'];
+    var tipoImovel = tipoImovelEl.options[tipoImovelEl.selectedIndex].text;
+    var motivo = this.motivo.options[this.motivo.selectedIndex].text;
+    var msg = 'Olá! Vim pelo site e quero agendar uma vistoria elétrica.\n\n' +
+      'Nome: ' + nome +
+      '\nContato: ' + contato +
+      '\nTipo de imóvel: ' + tipoImovel +
+      '\nMotivo: ' + motivo;
+    window.open('https://wa.me/5521964258095?text=' + encodeURIComponent(msg), '_blank');
+  });
+</script>
 </body>
 </html>
